@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <copy file="target/ironCluck.jar" tofile="K:/Steam/steamapps/common/SlayTheSpire/mods/ironCluck.jar"/>
-</target>
-</project>
