@@ -1,6 +1,7 @@
 package ironCluck.patches;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -36,7 +37,7 @@ public class IronCluckPatches {
                 public void edit(MethodCall m) throws CannotCompileException {
                     if (m.getClassName().equals(Ironclad.class.getName()) && m.getMethodName().equals("initializeClass")) {
                         m.replace("{" +
-                                "$proceed(\"ironCluckResources/img/combat.png\", \"ironCluckResources/img/shoulder2.png\", \"ironCluckResources/img/shoulder.png\", \"ironCluckResources/img/corpse.png\", $5,$6,$7,$8,$9,$10);" +
+                                "$proceed("+IronCluckPatches.class.getName()+".getPath(\"combat\"), "+IronCluckPatches.class.getName()+".getPath(\"shoulder2\"), " +IronCluckPatches.class.getName()+".getPath(\"shoulder\"), "+IronCluckPatches.class.getName()+".getPath(\"corpse\"), $5,$6,$7,$8,$9,$10);" +
                                 "}");
                     }
                 }
@@ -151,7 +152,7 @@ public class IronCluckPatches {
                         firstRun2 = false;
                         m.replace("{" +
                                 //Replace $3 with button image load
-                                "$_ = $proceed($1, $2, " + ImageMaster.class.getName() + ".loadImage(" + IronCluck.class.getName() + ".getModID() + \"Resources/img/ironcladButton.png\")," + ImageMaster.class.getName() + ".loadImage(" + IronCluck.class.getName() + ".getModID() + \"Resources/img/ironcladPortrait.png\"));" +
+                                "$_ = $proceed($1, $2, " + ImageMaster.class.getName() + ".loadImage(" +IronCluckPatches.class.getName()+".getPath(\"ironcladButton\"))," + ImageMaster.class.getName() + ".loadImage(" +IronCluckPatches.class.getName()+".getPath(\"ironcladPortrait\")));" +
                                 "}");
                     }
                 }
@@ -197,5 +198,13 @@ public class IronCluckPatches {
             CardCrawlGame.screenShake.shake(ScreenShake.ShakeIntensity.MED, ScreenShake.ShakeDur.SHORT, true);
             return SpireReturn.Return(null);
         }
+    }
+
+    public static String getPath(String append) {
+        String tmp = IronCluck.getModID() + "Resources/img/";
+        if(Loader.isModLoaded("cowboy-ironclad")) {
+            tmp += "cowboy/";
+        }
+        return tmp + append + ".png";
     }
 }
