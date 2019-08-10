@@ -1,0 +1,33 @@
+{
+  "cards": {},
+  "relics": {},
+  "events": {},
+  "charSelect": {
+    "IRONCLAD": [
+      {
+        "x": 1145.0,
+        "y": 1005.0,
+        "size": 25.0
+      }
+    ]
+  },
+  "creatures": {
+    "IRONCLAD": [
+      {
+        "bone": "Eye",
+        "x": 2.1300638,
+        "y": 3.8424337,
+        "size": 10.553174
+      },
+      {
+        "bone": "Wattle",
+        "x": -16.32614,
+        "y": -10.1822605,
+        "size": 8.0456505
+      }
+    ]
+  },
+  "creaturesStatic": {},
+  "orbs": {},
+  "potions": {}
+}
