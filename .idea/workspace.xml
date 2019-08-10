@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="72d51cf2-dd65-4a50-a11c-d4e25bf7cbd0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ironCluckResources/img/ironcluck.atlas" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ironCluckResources/img/ironcluck.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ironCluckResources/img/ironcluck.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ironCluck/patches/IronCluckPatches.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ironCluck/patches/IronCluckPatches.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +71,7 @@
       <updated>1565262635285</updated>
       <workItem from="1565262636596" duration="6536000" />
       <workItem from="1565365349850" duration="2781000" />
+      <workItem from="1565419831913" duration="2002000" />
     </task>
     <servers />
   </component>
@@ -78,7 +83,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

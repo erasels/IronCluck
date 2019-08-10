@@ -1,29 +1,24 @@
 package ironCluck.patches;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.spine.AnimationState;
 import com.evacipated.cardcrawl.modthespire.Loader;
-import com.evacipated.cardcrawl.modthespire.lib.*;
-import com.evacipated.cardcrawl.modthespire.patcher.PatchingException;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.characters.Ironclad;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.daily.mods.BlueCards;
-import com.megacrit.cardcrawl.daily.mods.Chimera;
-import com.megacrit.cardcrawl.daily.mods.Diverse;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.ImageMaster;
-import com.megacrit.cardcrawl.helpers.ModHelper;
 import com.megacrit.cardcrawl.helpers.ScreenShake;
 import com.megacrit.cardcrawl.screens.DeathScreen;
 import com.megacrit.cardcrawl.screens.charSelect.CharacterOption;
 import com.megacrit.cardcrawl.screens.charSelect.CharacterSelectScreen;
 import ironCluck.IronCluck;
 import javassist.CannotCompileException;
-import javassist.CtBehavior;
 import javassist.expr.ExprEditor;
-import javassist.expr.FieldAccess;
 import javassist.expr.MethodCall;
 import javassist.expr.NewExpr;
 
@@ -45,7 +40,8 @@ public class IronCluckPatches {
         }
     }
 
-    @SpirePatch(clz = Ironclad.class, method = SpirePatch.CONSTRUCTOR)
+    //Unneeded if using a Skeleton instead of a static image
+    /*@SpirePatch(clz = Ironclad.class, method = SpirePatch.CONSTRUCTOR)
     public static class SkipAnimationLoading {
         @SpireInsertPatch(locator = Locator.class)
         public static SpireReturn Insert(Ironclad __instance, String pN) {
@@ -78,7 +74,7 @@ public class IronCluckPatches {
                 }
             };
         }
-    }
+    }*/
 
     /*@SpirePatch(clz = Ironclad.class, method = "damage")
     public static class NewDamageAnimation {
@@ -96,6 +92,64 @@ public class IronCluckPatches {
             }
         }
     }*/
+
+    //Load new Skeleton
+    @SpirePatch(clz = Ironclad.class, method = SpirePatch.CONSTRUCTOR)
+    public static class LivelyChicken {
+        public static ExprEditor Instrument() {
+            return new ExprEditor() {
+                @Override
+                public void edit(MethodCall m) throws CannotCompileException {
+                    if (m.getClassName().equals(Ironclad.class.getName()) && m.getMethodName().equals("loadAnimation")) {
+                        m.replace("{" +
+                                "$proceed(\"ironCluckResources/img/ironcluck.atlas\", \"ironCluckResources/img/ironcluck.json\", 6.0f);" +
+                                "}");
+                    }
+                }
+            };
+        }
+    }
+
+    //Make use of Cowboy animation
+    @SpirePatch(clz = Ironclad.class, method = SpirePatch.CONSTRUCTOR)
+    @SpirePatch(clz = Ironclad.class, method = "damage")
+    public static class CowboyChick {
+        public static ExprEditor Instrument() {
+            return new ExprEditor() {
+                @Override
+                public void edit(MethodCall m) throws CannotCompileException {
+                    if(Loader.isModLoaded("cowboy-ironclad")) {
+                        if (m.getClassName().equals(AnimationState.class.getName()) && m.getMethodName().equals("setAnimation")) {
+                            m.replace("{" +
+                                    "String tempString = $2 + \"_Hat\";" +
+                                    "$_ = $proceed($1, tempString, $3);" +
+                                    "}");
+                        }
+                    }
+                }
+            };
+        }
+    }
+
+    //Make the chicken not lose its cowboy hat after getting hit
+    @SpirePatch(clz = Ironclad.class, method = "damage")
+    public static class StickyHat {
+        public static ExprEditor Instrument() {
+            return new ExprEditor() {
+                @Override
+                public void edit(MethodCall m) throws CannotCompileException {
+                    if(Loader.isModLoaded("cowboy-ironclad")) {
+                        if (m.getClassName().equals(AnimationState.class.getName()) && m.getMethodName().equals("addAnimation")) {
+                            m.replace("{" +
+                                    "String tempString = $2 + \"_Hat\";" +
+                                    "$_ = $proceed($1, tempString, $3, $4);" +
+                                    "}");
+                        }
+                    }
+                }
+            };
+        }
+    }
 
     //Change name
     @SpirePatch(clz = Ironclad.class, method = "getTitle")
